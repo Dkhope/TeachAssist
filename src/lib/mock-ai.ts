@@ -135,7 +135,7 @@ export async function generateResearch(input: string): Promise<ResearchResult> {
   await delay(1600);
   const isUrl = /^https?:\/\//i.test(input.trim());
   const topic = isUrl
-    ? input.trim().replace(/^https?:\/\//, "").split("/")[0]
+    ? (input.trim().replace(/^https?:\/\//, "").split("/")[0] ?? "this source")
     : input.trim().split(/\s+/).slice(0, 8).join(" ");
 
   return {
