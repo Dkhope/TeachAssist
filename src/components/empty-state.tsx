@@ -10,8 +10,8 @@ export function EmptyState({
   hint: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-10 text-center">
-      <span className="grid size-12 place-items-center rounded-2xl bg-muted text-muted-foreground">
+    <div className="flex min-h-52 flex-col items-center justify-center rounded-lg border border-dashed bg-card p-8 text-center shadow-card">
+      <span className="grid size-12 place-items-center rounded-lg bg-accent text-primary">
         <Icon className="size-6" />
       </span>
       <h3 className="mt-4 text-base font-semibold">{title}</h3>
@@ -22,7 +22,7 @@ export function EmptyState({
 
 export function ThinkingState({ label = "Generating…" }: { label?: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border bg-card p-5 shadow-card">
+    <div className="flex items-center gap-3 rounded-lg border bg-card p-5 shadow-card">
       <span className="flex gap-1">
         {[0, 1, 2].map((i) => (
           <span

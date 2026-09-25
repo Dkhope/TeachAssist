@@ -105,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -133,7 +133,7 @@ function RootShell({ children }: { children: ReactNode }) {
 function AppHeader() {
   const { theme, toggle } = useTheme();
   return (
-    <header className="no-print sticky top-0 z-20 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b bg-background/80 px-3 py-3 backdrop-blur sm:px-6">
+    <header className="no-print sticky top-0 z-20 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b bg-background/90 px-3 py-3 backdrop-blur sm:px-6">
       <SidebarTrigger />
       <div className="min-w-0">
         <p className="truncate font-display text-sm font-semibold sm:text-base">TeachAssist</p>
@@ -154,14 +154,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen w-full bg-background">
           <AppSidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <AppHeader />
-            <main className="flex-1 px-3 py-6 sm:px-6 lg:px-8">
-              <div className="mx-auto w-full max-w-5xl">
+            <main className="flex-1 px-3 py-6 sm:px-6 lg:px-10">
+              <div className="mx-auto w-full max-w-6xl">
                 <Outlet />
-                <p className="no-print mt-12 rounded-2xl bg-muted/70 p-4 text-xs leading-relaxed text-muted-foreground">
+                <p className="no-print mt-12 rounded-lg border bg-muted/70 p-4 text-xs leading-relaxed text-muted-foreground">
                   TeachAssist provides AI-generated content which may contain inaccuracies. Users
                   should review all outputs before using them in educational or professional
                   settings.

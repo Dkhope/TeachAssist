@@ -30,15 +30,15 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="no-print">
-      <SidebarHeader className="px-3 py-4">
+      <SidebarHeader className="px-3 py-5">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="surface-primary grid size-9 shrink-0 place-items-center rounded-xl text-primary-foreground shadow-card">
+          <span className="surface-primary grid size-10 shrink-0 place-items-center rounded-lg text-primary-foreground shadow-card">
             <GraduationCap className="size-5" />
           </span>
           {!collapsed && (
             <span className="min-w-0">
               <span className="block truncate font-display text-base font-semibold">TeachAssist</span>
-              <span className="block truncate text-xs text-muted-foreground">Teacher productivity</span>
+              <span className="block truncate text-xs text-sidebar-foreground/60">Teacher productivity</span>
             </span>
           )}
         </Link>
@@ -70,7 +70,7 @@ export function AppSidebar() {
 
       {!collapsed && (
         <SidebarFooter className="p-3">
-          <p className="rounded-xl bg-accent/60 p-3 text-[11px] leading-relaxed text-accent-foreground">
+          <p className="rounded-lg border border-sidebar-border bg-sidebar-accent p-3 text-[11px] leading-relaxed text-sidebar-foreground/70">
             AI-generated content may contain inaccuracies. Please review outputs before classroom use.
           </p>
         </SidebarFooter>
