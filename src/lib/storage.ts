@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type SetStateAction } from "react";
+
+import type { Task } from "@/lib/mock-ai";
 
 export type SavedItem = {
   id: string;
@@ -10,6 +12,7 @@ export type SavedItem = {
 
 const FAV_KEY = "teachassist:favourites";
 const ACT_KEY = "teachassist:activity";
+const TASK_KEY = "teachassist:tasks";
 
 function read<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -42,9 +45,10 @@ function useStoredList<T>(key: string) {
   }, [key]);
 
   const set = useCallback(
-    (next: T[]) => {
-      write(key, next);
-      setItems(next);
+    (next: SetStateAction<T[]>) => {
+      const value = typeof next === "function" ? next(read<T[]>(key, [])) : next;
+      write(key, value);
+      setItems(value);
     },
     [key],
   );
@@ -99,6 +103,10 @@ export function useActivity() {
 
 export function clearActivity() {
   write(ACT_KEY, []);
+}
+
+export function useTasks() {
+  return useStoredList<Task>(TASK_KEY);
 }
 
 export function exportToPdf() {
