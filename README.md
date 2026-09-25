@@ -228,6 +228,7 @@ TeachAssist is intended to support educators, not replace professional expertise
 # 👨‍💻 Author
 
 Dakalo
+GitHub: https://image-fidelity-vue.lovable.app/ 
 
 # 📄 License
 Developed as an AI-powered educational productivity platform that demonstrates how artificial intelligence can support planning, research, and workplace productivity within the education sector.
