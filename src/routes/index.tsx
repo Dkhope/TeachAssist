@@ -3,7 +3,9 @@ import {
   ArrowRight,
   BookOpenCheck,
   CalendarClock,
+  ChevronRight,
   Clock,
+  ListChecks,
   MessageSquareHeart,
   Sparkles,
   Star,
@@ -12,9 +14,10 @@ import {
 
 import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useActivity, useFavourites, timeAgo } from "@/lib/storage";
+import { useActivity, useFavourites, useTasks, timeAgo } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -60,6 +63,18 @@ const tools = [
 function Dashboard() {
   const activity = useActivity();
   const { favourites } = useFavourites();
+  const [tasks] = useTasks();
+
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const priorityOrder = { high: 0, medium: 1, low: 2 } as const;
+  const focusTasks = [...tasks]
+    .sort((a, b) => {
+      const aDue = a.deadline ? (a.deadline <= todayKey ? 0 : 1) : 2;
+      const bDue = b.deadline ? (b.deadline <= todayKey ? 0 : 1) : 2;
+      return aDue - bDue || priorityOrder[a.priority] - priorityOrder[b.priority] || a.deadline.localeCompare(b.deadline);
+    })
+    .slice(0, 3);
 
   const stats = [
     { label: "Tools used this week", value: activity.length, max: 12, icon: TrendingUp },
@@ -103,6 +118,52 @@ function Dashboard() {
             </CardContent>
           </Card>
         ))}
+      </section>
+
+      <section>
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold">Today’s focus</h2>
+            <p className="text-sm text-muted-foreground">Your most important tasks at a glance.</p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="shrink-0">
+            <Link to="/planner">View in Task Planner <ChevronRight className="size-4" /></Link>
+          </Button>
+        </div>
+        {focusTasks.length === 0 ? (
+          <Card className="border-dashed shadow-card">
+            <CardContent className="flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-accent text-primary">
+                  <ListChecks className="size-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">No tasks planned yet</p>
+                  <p className="text-xs text-muted-foreground">Add today’s marking, lessons, or admin work.</p>
+                </div>
+              </div>
+              <Button asChild size="sm"><Link to="/planner">Add tasks</Link></Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="overflow-hidden shadow-card">
+            <CardContent className="divide-y p-0">
+              {focusTasks.map((task) => {
+                const dueLabel = task.deadline < todayKey ? "Overdue" : task.deadline === todayKey ? "Due today" : task.deadline ? `Due ${new Date(`${task.deadline}T00:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric" })}` : "No deadline";
+                return (
+                  <Link key={task.id} to="/planner" className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3.5 transition-colors hover:bg-accent/60">
+                    <span className="grid size-8 place-items-center rounded-md bg-muted text-primary"><ListChecks className="size-4" /></span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold">{task.title}</span>
+                      <span className="block text-xs text-muted-foreground">{dueLabel} · {task.minutes} min</span>
+                    </span>
+                    <Badge variant="secondary" className="capitalize">{task.priority}</Badge>
+                  </Link>
+                );
+              })}
+            </CardContent>
+          </Card>
+        )}
       </section>
 
       <section className="grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(280px,2fr)]">

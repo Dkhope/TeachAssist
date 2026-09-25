@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateSchedule, type Priority, type SchedulePlan, type Task } from "@/lib/mock-ai";
-import { logActivity } from "@/lib/storage";
+import { logActivity, useTasks } from "@/lib/storage";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -49,7 +49,7 @@ const priorityStyles: Record<Priority, string> = {
 };
 
 function Planner() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useTasks();
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState<Priority>("medium");
